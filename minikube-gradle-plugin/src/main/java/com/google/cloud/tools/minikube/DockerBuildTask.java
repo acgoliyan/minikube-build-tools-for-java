@@ -19,6 +19,7 @@ package com.google.cloud.tools.minikube;
 import com.google.cloud.tools.minikube.util.CommandExecutor;
 import com.google.cloud.tools.minikube.util.MinikubeDockerEnvParser;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,11 +40,14 @@ public class DockerBuildTask extends DefaultTask {
   private String context;
   /** Flags passthrough */
   private String[] flags = {};
+  /** The path to the Dockerfile */
+  private Path dockerfile;
 
   public DockerBuildTask() {
     minikube = getProject().property(String.class);
     docker = getProject().property(String.class);
     context = getProject().getBuildDir().toPath().resolve("libs").toString();
+    dockerfile = getProject().getProjectDir().toPath().resolve("src").resolve("main").resolve("docker").resolve("Dockerfile");
   }
 
   // @VisibleForTesting
@@ -105,6 +109,15 @@ public class DockerBuildTask extends DefaultTask {
     this.flags = flags;
   }
 
+  @Input
+  public Path getDockerfile() {
+    return dockerfile;
+  }
+
+  public void setDockerfile(Path dockerfile) {
+    this.dockerfile = dockerfile;
+  }
+
   @TaskAction
   public void execDockerBuild() throws IOException, InterruptedException {
     // Gets the minikube docker environment variables by running the command 'minikube docker-env'.
@@ -113,8 +126,7 @@ public class DockerBuildTask extends DefaultTask {
     List<String> dockerEnv =
         commandExecutorFactory.createCommandExecutor().run(minikubeDockerEnvCommand);
 
-    Map<String, String> environment;
-    environment = MinikubeDockerEnvParser.parse(dockerEnv);
+    Map<String, String> environment = MinikubeDockerEnvParser.parse(dockerEnv);
 
     // Runs the docker build command with the minikube docker environment.
     List<String> dockerBuildCommand = buildDockerBuildCommand();
@@ -130,6 +142,10 @@ public class DockerBuildTask extends DefaultTask {
     execString.add(docker.get());
     execString.add("build");
     execString.addAll(Arrays.asList(flags));
+
+    execString.add("-f");
+    execString.add(dockerfile.toString());
+
     execString.add(context);
 
     return execString;

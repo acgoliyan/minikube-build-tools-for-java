@@ -16,16 +16,11 @@
 
 package com.google.cloud.tools.minikube;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;
-import org.gradle.testkit.runner.GradleRunner;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,7 +36,8 @@ public class PrepareDockerBuildTaskTest {
     Project project = ProjectBuilder.builder().withProjectDir(testProjectDir.getRoot()).build();
 
     Path buildLibsDir = testProjectDir.getRoot().toPath().resolve("build").resolve("libs");
-    Path srcMainDockerDir = testProjectDir.getRoot().toPath().resolve("src").resolve("main").resolve("docker");
+    Path srcMainDockerDir =
+        testProjectDir.getRoot().toPath().resolve("src").resolve("main").resolve("docker");
     Files.createDirectories(buildLibsDir);
     Files.createFile(buildLibsDir.resolve("app.jar"));
     Files.createDirectories(srcMainDockerDir);

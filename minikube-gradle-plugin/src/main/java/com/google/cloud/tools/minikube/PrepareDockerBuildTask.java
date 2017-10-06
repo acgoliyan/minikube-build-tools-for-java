@@ -30,7 +30,15 @@ public class PrepareDockerBuildTask extends Sync {
 
   public PrepareDockerBuildTask() {
     context = getProject().getBuildDir().toPath().resolve("libs").toString();
-    dockerfile = getProject().getProjectDir().toPath().resolve("src").resolve("main").resolve("docker").resolve("Dockerfile").toString();
+    dockerfile =
+        getProject()
+            .getProjectDir()
+            .toPath()
+            .resolve("src")
+            .resolve("main")
+            .resolve("docker")
+            .resolve("Dockerfile")
+            .toString();
 
     updateFrom();
     into(getProject().getBuildDir().toPath().resolve("docker").toString());

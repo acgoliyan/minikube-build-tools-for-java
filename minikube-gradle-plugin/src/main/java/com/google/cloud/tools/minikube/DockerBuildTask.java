@@ -47,7 +47,14 @@ public class DockerBuildTask extends DefaultTask {
     minikube = getProject().property(String.class);
     docker = getProject().property(String.class);
     context = getProject().getBuildDir().toPath().resolve("libs").toString();
-    dockerfile = getProject().getProjectDir().toPath().resolve("src").resolve("main").resolve("docker").resolve("Dockerfile");
+    dockerfile =
+        getProject()
+            .getProjectDir()
+            .toPath()
+            .resolve("src")
+            .resolve("main")
+            .resolve("docker")
+            .resolve("Dockerfile");
   }
 
   // @VisibleForTesting
@@ -109,15 +116,6 @@ public class DockerBuildTask extends DefaultTask {
     this.flags = flags;
   }
 
-  @Input
-  public Path getDockerfile() {
-    return dockerfile;
-  }
-
-  public void setDockerfile(Path dockerfile) {
-    this.dockerfile = dockerfile;
-  }
-
   @TaskAction
   public void execDockerBuild() throws IOException, InterruptedException {
     // Gets the minikube docker environment variables by running the command 'minikube docker-env'.
@@ -142,10 +140,6 @@ public class DockerBuildTask extends DefaultTask {
     execString.add(docker.get());
     execString.add("build");
     execString.addAll(Arrays.asList(flags));
-
-    execString.add("-f");
-    execString.add(dockerfile.toString());
-
     execString.add(context);
 
     return execString;

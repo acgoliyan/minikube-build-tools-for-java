@@ -1,16 +1,16 @@
-This is a temporary location for a Gradle plugin for building Java application images, similar to what  does.
-
 # Jib
 
 ## What is Jib?
 
 Jib is...
 
+## Goals
+
 ## Quickstart
 
 ## Extended Usage
 
-## Documentation
+## How Jib Works
 
 ## Frequently Asked Questions (FAQ)
 
@@ -18,4 +18,4 @@ Jib is...
 
 [bazelbuild/rules_docker](https://github.com/bazelbuild/rules_docker)
 
-## Support
+## Contact

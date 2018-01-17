@@ -33,13 +33,27 @@ In your Maven Java project, add the plugin to your `pom.xml`:
 
 Configure the plugin by changing `registry`, `repository`, and `credentialHelperName` accordingly.
 
-For example, to build the image `gcr.io/my-gcp-project/my-image`, the configuration would be:
+#### I am using Google Container Registry (GCR)
+
+For example, to build the image `gcr.io/my-gcp-project/my-app`, the configuration would be:
 
 ```
 <configuration>
     <registry>gcr.io</registry>
-    <repository>my-gcp-project/my-image</repository>
+    <repository>my-gcp-project/my-app</repository>
     <credentialHelperName>gcr</credentialHelperName>
+</configuration>
+```
+
+#### I am using Amazon Elastic Container Registry (ECR)
+
+For example, to build the image `aws_account_id.dkr.ecr.region.amazonaws.com/my-app`, the configuration would be:
+
+```
+<configuration>
+    <registry>aws_account_id.dkr.ecr.region.amazonaws.com</registry>
+    <repository>my-app</repository>
+    <credentialHelperName>ecr</credentialHelperName>
 </configuration>
 ```
 
